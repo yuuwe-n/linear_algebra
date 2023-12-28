@@ -59,18 +59,44 @@ def sm(size : int, i, j, c) -> np.array:
 	E[i,j]=c
 	return E
 
+A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
+
 def elimination(A : np.array):
 	if A.shape[0] != A.shape[1]:
 		return False
 	
-	p_0 = A[0,0]
-	c_10 = -1 * A[1,0] / p_0
-	S_10 = sm(3,1,0,c_10)
+	n = A.shape[0]
 	
-	c_20 = -1 * A[2,0] / p_0
-	S_20 = sm(3,2,0,c_20)
+	E = []
+	for j in range(0,n-1):
+		p = A[j,j]
+		
+		# The shear matrices in one column
+		S = np.identity(n)
+		for i in range(j+1,n):
+			print(i,j)
+			c = -1 * A[i,j] / p
+			s = sm(n,i,j,c)
+			# append shear matrices to a single shear matrix
+			S = np.dot(S,s) 
+		#	print(s)
+		print(S)
+		# Appends all shear matrices to a single E matrix. where E * A = U
+		E.append(S)
+	print(E)
+	for i in E:
+		A = np.dot(i,A)
 
-	return(multi_dot([S_20,S_10,A]))
+	print(A)
+	
+#	p_0 = A[0,0]
+#	c_10 = -1 * A[1,0] / p_0
+#	S_10 = sm(3,1,0,c_10)
+#	
+#	c_20 = -1 * A[2,0] / p_0
+#	S_20 = sm(3,2,0,c_20)
+
+#	return(multi_dot([S_20,S_10,A]))
 #	return(np.dot(S_20,np.dot(S_10,A)))
 
-print(elimination(A))
+elimination(A)
