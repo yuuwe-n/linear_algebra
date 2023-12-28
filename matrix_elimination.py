@@ -55,20 +55,21 @@ def elimination(A : np.array) -> tuple[np.array, []]:
 def backward_sub(U : np.array, y : np.array):
 	n = U.shape[0]
 
-	X = []	
+	X = np.zeros(n)
 	for i in range(0,n)[::-1]:
-	#	print("i",i)
+		print("i",i)
 		x = y[i]
 		for k in range(i+1,n):
-#			print("k",k)
-#			print("k-n",1+k-n)
+			print("k",k)
+			print("k-n",k)
+			print("-----")
 			# access X backwards
-			x = x - U[i,k]*X[1+k-n]
+			x = x - U[i,k]*X[k]
 		x = x / U[i,i]
-		X.append(x)
+		X[i] = x
 
 	# reverses list at the end
-	X = X[::-1]
+#	X = X[::-1]
 	return X
 
 # produces random matrix with max values of M
@@ -82,13 +83,17 @@ def rand_array(n : int, M : int):
 	return A
 
 # Test Inputs
-A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
+#A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
+#b = [5,10,3,1]
+
 #A = np.array([[1,0,0,1],[2,1,3,0],[3,8,1,1],[2,3,5,1]])
-b = [5,10,3,1]
 #b = [1315,10325,3123,1968]
 
 #A = rand_array(5, 10)
-#b = [5,10,3,9,6]
+#b = [53,103,33,29,26]
+
+A = np.array([[2,1,0,0],[1,2,1,0],[0,1,2,1],[0,0,1,2]])
+b = np.array([0,0,0,5])
 
 U, E = elimination(A)
 
