@@ -92,7 +92,9 @@ def rand_array(n : int, M : int):
 #A = rand_array(5, 10)
 #b = [53,103,33,29,26]
 
-A = np.array([[2,1,0,0],[1,2,1,0],[0,1,2,1],[0,0,1,2]])
+#A = np.array([[2,1,0,0],[1,2,1,0],[0,1,2,1],[0,0,1,2]])
+#b = np.array([0,0,0,5])
+A = np.array([[2,-1,0,0],[-1,2,-1,0],[0,-1,2,-1],[0,0,-1,2]])
 b = np.array([0,0,0,5])
 
 U, E = elimination(A)
@@ -106,7 +108,7 @@ x = backward_sub(U,y)
 # truncate
 for i in range(0,U.shape[0]):
 	for j in range(0,U.shape[1]):
-		if U[i,j] < 0.000000001:
+		if abs(U[i,j]) < 0.000000001:
 			U[i,j] = 0
 
 # print original equation
