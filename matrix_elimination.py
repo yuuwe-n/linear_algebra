@@ -1,6 +1,8 @@
 import numpy as np
 from numpy.linalg import multi_dot
 
+import random
+
 # shear matrix S_ij(c)
 # turn into class so default size is 4
 def sm(size : int, i, j, c) -> np.array:
@@ -8,12 +10,12 @@ def sm(size : int, i, j, c) -> np.array:
 	E[i,j]=c
 	return E
 
-A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
-x = [5,10,3,1]
 
 def elimination(A : np.array) -> tuple[np.array, []]:
 	if A.shape[0] != A.shape[1]:
 		return False
+
+	A_copy = A
 	
 	n = A.shape[0]
 	
@@ -24,42 +26,31 @@ def elimination(A : np.array) -> tuple[np.array, []]:
 		
 		# The shear matrices in one column
 		S = np.identity(n)
+
+		# create j+1 -> n shear matrices and combine
 		for i in range(j+1,n):
 #			print(i,j)
 			c = -1 * A[i,j] / p
 			s = sm(n,i,j,c)
 			# append shear matrices to a single shear matrix
 			S = np.dot(S,s) 
-		#	print(s)
-#		print(S)
-		# Appends all shear matrices to a single E matrix. where E * A = U
-		E.append(S)
 
+		# applies shear matrix to A => find new pivot and shear matrices
+		A = np.dot(S,A)
+
+		# Appends all (column) shear matrices to a single E matrix. where E * A = U
+		E.append(S)
+	
 	# converts each entry of E into a single matrix
 	temp = np.identity(n)
 	for i in E:
 		temp = np.dot(i,temp)
 	E = temp
 
-	U = np.dot(E,A)
+	U = np.dot(E,A_copy)
 
 	return(U, E)
 	
-U, E = elimination(A)
-
-y = np.dot(E,x)
-
-print(U)
-print(y)
-
-x3 = y[3]/U[3,3]
-x2 = (y[2]-U[2,3]*x3)/U[2,2]
-x1 = (y[1]-U[1,2]*x2-U[1,3]*x3)/U[1,1]
-x0 = (y[0]-U[0,1]*x1-U[0,2]*x2-U[0,3]*x3)/U[0,0]
-
-x = np.array([x0,x1,x2,x3])
-
-print(x)
 
 def backward_sub(U : np.array, y : np.array):
 	n = U.shape[0]
@@ -69,15 +60,49 @@ def backward_sub(U : np.array, y : np.array):
 	#	print("i",i)
 		x = y[i]
 		for k in range(i+1,n):
-	#		print("k",k)
-			x = x - U[i,k]*X[k-n]
+#			print("k",k)
+#			print("k-n",1+k-n)
+			# access X backwards
+			x = x - U[i,k]*X[1+k-n]
 		x = x / U[i,i]
 		X.append(x)
 
 	# reverses list at the end
 	X = X[::-1]
+	return X
 
-backward_sub(U,y)
+# produces random matrix with max values of M
+def rand_array(n : int, M : int):
+	A = np.zeros([n,n])
+	
+	for i in range(0,n):
+		for j in range(0,n):
+			a = random.randint(0, M)
+			A[i,j] = a
+	return A
+
+# Test Inputs
+A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
+#A = np.array([[1,0,0,1],[2,1,3,0],[3,8,1,1],[2,3,5,1]])
+b = [5,10,3,1]
+#b = [1315,10325,3123,1968]
+
+#A = rand_array(5, 10)
+#b = [5,10,3,9,6]
+
+U, E = elimination(A)
+
+print(E)
+
+y = np.dot(E,b)
+
+x = backward_sub(U,y)
+
+# truncate
+for i in range(0,U.shape[0]):
+	for j in range(0,U.shape[1]):
+		if U[i,j] < 0.000000001:
+			U[i,j] = 0
 
 # print original equation
 def p_a():
@@ -93,7 +118,7 @@ def p_u():
 	print(x)
 	print(y)
 
-#p_a()
-#print()
-#p_u()
+p_a()
+print()
+p_u()
 
