@@ -5,15 +5,30 @@ import random
 
 class Me:
 	
-	def __init__(self):
-		self.size = 0
-		A = np.zeros((self.size, self.size))
-		b = np.zeros(self.size)
+	# size of square matrix
+	n = 0
 
-	def __init__(self, size):
-		self.size = size
-		A = np.zeros((self.size, self.size))
-		b = np.zeros(self.size)
+	A = np.zeros((n,n))
+	b = np.zeros(n)
+	
+	def __init__(self, A : np.array, b : np.array):
+		if A.shape[0] != A.shape[1]:
+			return False
+		else:
+			self.n = A.shape[0]
+		
+		if self.n != b.shape[0]:
+			return False
+		
+		self.A = A
+		self.b = b
+
+		(self.U, self.E) = Me.elimination(self.A)
+		
+		self.y = np.dot(self.E,self.b)
+		
+		self.x = Me.backward_sub(self.U, self.y)
+
 
 	# shear matrix S_ij(c)
 	# turn into class so default size is 4
@@ -94,66 +109,42 @@ class Me:
 				A[i,j] = a
 		return A
 	
+	# truncate U => truncate any matrix for specified range
+	def truncate():
+		U = self.U
+		for i in range(0,U.shape[0]):
+			for j in range(0,U.shape[1]):
+				if abs(U[i,j]) < 0.000000001:
+					U[i,j] = 0
 
 	# print original equation
-	def p_a():
+	def p_a(self):
 		print("A * x = b")
-		print(A)
-		print(x)
-		print(b)
+		print(self.A)
+		print(self.x)
+		print(self.b)
 	
-	def p_e():
+	def p_e(self):
 		print("E")
-		print(E)
+		print(self.E)
 	
 	# print upper triangular equation
-	def p_u():
+	def p_u(self):
 		print("U * x = y")
-		print(U)
-		print(x)
-		print(y)
+		print(self.U)
+		print(self.x)
+		print(self.y)
+
+	def p(self):
+		self.p_a()
+		self.p_u()
 
 
 # Test Inputs
 A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
-b = [5,10,3,1]
+b = np.array([5,10,3,1])
 
-#A = np.array([[1,0,0,1],[2,1,3,0],[3,8,1,1],[2,3,5,1]])
-#b = [1315,10325,3123,1968]
+system = Me(A,b)
+system.p()
 
-#A = rand_array(5, 10)
-#b = [53,103,33,29,26]
-
-# pset2.2 21
-#A = np.array([[2,1,0,0],[1,2,1,0],[0,1,2,1],[0,0,1,2]])
-#b = np.array([0,0,0,5])
-#A = np.array([[2,-1,0,0],[-1,2,-1,0],[0,-1,2,-1],[0,0,-1,2]])
-#b = np.array([0,0,0,0,5])
-#A = np.array([[2,-1,0,0,0],[-1,2,-1,0,0],[0,-1,2,-1,0],[0,0,-1,2,-1],[0,0,0,-1,2]])
-#b = np.array([0,0,0,0,5])
-
-#A = np.array([[2,-1,0,0],[-1,2,-1,0],[0,-1,2,-1],[0,0,-1,2]])
-#b = np.array([1,0,0,0])
-
-A = np.array([[1,1,1],[1,2,4],[1,3,9]])
-b = np.array([4,8,14])
-
-U, E = Me.elimination(A)
-
-y = np.dot(E,b)
-
-x = Me.backward_sub(U,y)
-
-# truncate
-for i in range(0,U.shape[0]):
-	for j in range(0,U.shape[1]):
-		if abs(U[i,j]) < 0.000000001:
-			U[i,j] = 0
-
-Me(3)
-
-Me.p_e()
-Me.p_a()
-print()
-Me.p_u()
-
+print(Me.elimination(A))
