@@ -10,7 +10,7 @@ class Me:
 
 	A = np.zeros((n,n))
 	b = np.zeros(n)
-	
+
 	def __init__(self, A : np.array, b : np.array):
 		if A.shape[0] != A.shape[1]:
 			return False
@@ -141,10 +141,10 @@ class Me:
 
 
 # Test Inputs
-A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
-b = np.array([5,10,3,1])
+#A = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
+#jb = np.array([5,10,3,1])
 
-system = Me(A,b)
-system.p()
+#system = Me(A,b)
+#system.p()
 
-print(Me.elimination(A))
+#print(Me.elimination(A))
