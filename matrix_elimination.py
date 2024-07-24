@@ -1,6 +1,12 @@
 import numpy as np
 from numpy.linalg import multi_dot
 
+# TODO
+# matrix_rank check if matrix is singular
+# if singular, do not run program
+# if not singular, allow swaps between rows
+
+
 import random
 
 class Me:
@@ -12,6 +18,7 @@ class Me:
 	b = np.zeros(n)
 
 	def __init__(self, A : np.array, b : np.array):
+		# check if matrix is square
 		if A.shape[0] != A.shape[1]:
 			return False
 		else:

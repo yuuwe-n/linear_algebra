@@ -1,0 +1,343 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace} % doublespace
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts} % for "\mathbb" macro
+\usepackage{amsmath} % for "\mathbb" macro
+\usepackage{mdframed} % mdtheoremenv
+\usepackage{ntheorem}
+
+\input{./macros}
+\onehalfspacing
+
+\title{Linear Algebra Textbook}
+\author{Duy Nguyen}
+\date{October 2023}
+
+% idk what this does
+%\newenvironment{myTheorem}[2]{ \begin{Theorem}[adjusted title=#1]{}{#2} 
+%  \textbf{Theorem \thetcbcounter.} }{\end{Theorem}}
+
+\theorembodyfont{\upshape}
+
+\newmdtheoremenv[ntheorem]{defin}{Definition}[section]
+\newmdtheoremenv[ntheorem]{theo}{Theorem}[section]
+
+\begin{document}
+
+%\maketitle
+\tableofcontents
+
+% Inline formula \(x^2 + y^2 = 1\)
+% Middle formula \[x^n + y^n = 1\]
+
+\section{Preliminary}
+
+\subsection{Set Theory}
+\begin{defin}{\textbf{Number Sets}}
+
+$\N$ = {1, 2, 3, 4, 5, ...} is the set of all \textbf{Natural Numbers} or positive integers
+
+$\Z$ = {..., -3, -2, -1, 0, 1, 2, 3, ...} is the set of all \textbf{Integers}
+
+$\Q$ = \{x: p/q for some p, q $\in \Z$ \} is the set of all \textbf{Rational Numbers}
+
+$\R$ = \{x: x is a real number\} is the set of all \textbf{Real Numbers}
+
+$\C$ = is the set of all \textbf{Complex Numbers}
+\end{defin}
+
+\section{Vectors}
+
+\subsection{Inner Products}
+\subsection{Matrix Vector Multiplication}
+\newpage
+\begin{defin}{Matrix Column Vector Multiplication via Linear Combinations}
+
+    Let A $\in \R^{m \times n}$ and let $\textbf{x} \in \R^{n \times 1}$. We take linear combinations of the scalars of \textbf{x} with the columns of A.
+
+    \[
+    \textbf{b} = \sum_{k=1}^{n}x_k \cdot A(:, k)
+    \]
+
+    \[
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots & a_{mn} \\
+    \end{bmatrix}_{m \times n}
+    \begin{bmatrix}
+        x_1 \\
+        x_2 \\
+        \vdots \\
+        x_n
+    \end{bmatrix}_{n \times 1} = 
+    \begin{bmatrix}
+        b_1 \\
+        b_2 \\
+        \vdots \\
+        b_m
+    \end{bmatrix}_{m \times 1}
+    \]
+    \[
+    \textbf{b} = \sum_{k=1}^n x_k \cdot A(:, k)
+    \]
+    \[
+    =
+    x_1 \cdot
+    \begin{bmatrix}
+        a_{11} \\ a_{21} \\ \vdots \\ a_{m1}
+    \end{bmatrix}
+    + x_2 \cdot
+    \begin{bmatrix}
+        a_{12} \\ a_{22} \\ \vdots \\ a_{m2}
+    \end{bmatrix}
+    + \cdots + x_n
+    \begin{bmatrix}
+        a_{1n} \\ a_{2n} \\ \vdots \\ a_{mn}
+    \end{bmatrix}
+    \]
+\end{defin}
+
+\begin{defin}{\textbf{Matrix Column Vector Multiplication via Dot Products}}
+    
+    Let A $\in \R^{m \times n}$ and let \textbf{x} $\in \R^{n \times 1}$. We take the dot products of the rows of A with the column vector \textbf{x}.
+
+    \[
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & ... & a_{mn} \\
+    \end{bmatrix}_{m \times n}
+    \begin{bmatrix}
+        x_1 \\
+        x_2 \\
+        \vdots \\
+        x_n
+    \end{bmatrix}_{n \times 1} = 
+    \begin{bmatrix}
+        b_1 \\
+        b_2 \\
+        \vdots \\
+        b_m
+    \end{bmatrix}_{m \times 1}
+    \]
+    \[
+    b_i = 
+    \begin{bmatrix}\text{A(i, :)}\end{bmatrix}_{1 \times n}
+    \cdot 
+    \begin{bmatrix}\textbf{x}\end{bmatrix}_{n \times 1}
+    \]
+    \[
+    =
+    \begin{bmatrix}
+        a_{i1} & a_{i2} & \cdots & a_{in}
+    \end{bmatrix}_{1 \times n}
+    \cdot
+    \begin{bmatrix}
+        x_{1} \\ x_2 \\ \vdots \\ x_n
+    \end{bmatrix}_{n \times 1}
+    \]
+    \[
+    = \sum_{k=1}^{n}a_{ik} \cdot x_k
+    \]
+    \[
+    = a_{i1} \cdot x_1 + a_{i2} \cdot x_2 + \cdots + a_{in} \cdot x_n
+    \]
+\end{defin}
+\begin{defin}{Row Vector Matrix Multiplication via Linear Combinations}
+
+    Let A $\in \R^{m \times n}$ and \textbf{x} $\in \R^{m \times 1}$. Then $\textbf{x}^T A$ are the linear combinations of the scalars of \textbf{x} and the rows of A. 
+    \[
+    \begin{bmatrix}
+        x_1 & x_2 & \cdots & x_m
+    \end{bmatrix}_{1 \times m}
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots & a_{mn} \\
+    \end{bmatrix}_{m \times n}
+    =
+    \begin{bmatrix}
+        b_1 & b_2 & \cdots & b_n
+    \end{bmatrix}_{1 \times n}
+    \]
+    \[
+    \textbf{b} = \sum_{k=1}^n x_k \cdot 
+    \begin{bmatrix}A(k, :)\end{bmatrix}_{1 \times n}
+    \]
+    \begin{align}
+    = x_1 
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n}
+    \end{bmatrix}
+    \\
+    + x_2
+    \begin{bmatrix}
+        a_{21} & a_{22} & \cdots & a_{2n}
+    \end{bmatrix}
+    \\
+    + \cdots +
+    \begin{bmatrix}
+        a_{m1} & a_{m2} & \cdots & a_{mn}
+    \end{bmatrix}
+    \end{align}
+\end{defin}
+\newpage
+\begin{defin}{\textbf{Row Vector Matrix Multiplication via Dot Products}}
+
+    Let A $\in \R^{m \times n}$ and \textbf{x} $\in \R^{m \times 1}$. Then $\textbf{x}^T A$ are the dot products of the columns of A with the row vector \textbf{x}. 
+    \[
+    \begin{bmatrix}
+        x_1 & x_2 & \cdots & x_m
+    \end{bmatrix}_{1 \times m}
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots & a_{mn} \\
+    \end{bmatrix}_{m \times n}
+    =
+    \begin{bmatrix}
+        b_1 & b_2 & \cdots & b_n
+    \end{bmatrix}_{1 \times n}
+    \]
+    \[
+    b_j = \textbf{x}^T \cdot A(:, j)
+    \]
+    \[
+    =
+    \begin{bmatrix}
+        x_1 & x_2 & \cdots & x_m
+    \end{bmatrix}_{1 \times m}
+    \begin{bmatrix}
+        a_{1j} \\ a_{2j} \\ \vdots \\ a_{mj}
+    \end{bmatrix}
+    \]
+    \[= \sum_{k=1}^{m}x_k \cdot a_{mj}\]
+    \[= x_1 \cdot a_{1j} + x_2 \cdot a_{2j} + \cdots + x_1 \cdot a_{mj}\]
+    
+\end{defin}
+
+
+\newpage
+\section{Matrices}
+\subsection{Outer Products}
+\subsection{Matrix Multiplication}
+
+\begin{defin}{Matrix Matrix Multiplication via Linear Combinations of Columns}
+
+    Let A $\in \R^{m \times p}$ and X $\in \R^{p \times n}$
+
+    The jth column of B are linear combinations of columns of A with scalars in jth column X.
+
+    \[ \text{B(:, j)} = \text{A} \cdot \text{X(:, j)}\]
+
+    \[ \text{B(:, j)} = \sum_{k=1}^{p}\]
+
+    \[
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1p} \\
+        a_{21} & a_{22} & \cdots & a_{2p} \\
+        \vdots & \vdots & \ddots & \vdots    \\
+        a_{m1} & a_{m2} & \cdots & a_{mp} \\
+    \end{bmatrix}_{m \times p}
+    \begin{bmatrix}
+        x_{1j} \\
+        x_{2j} \\
+        \vdots \\
+        x_{pj}
+    \end{bmatrix}_{p \times 1}
+    =
+    \begin{bmatrix}
+        b_{1j} \\
+        b_{2j} \\
+        \vdots \\
+        b_{mj}
+    \end{bmatrix}_{m \times 1}
+    \]
+
+    \[
+    =
+    x_{1j} \cdot
+    \begin{bmatrix}
+        a_{11} \\ a_{21} \\ \vdots \\ a_{m1}
+    \end{bmatrix}
+    + x_{2j} \cdot
+    \begin{bmatrix}
+        a_{12} \\ a_{22} \\ \vdots \\ a_{m2}
+    \end{bmatrix}
+    + \cdots + x_{pj}
+    \begin{bmatrix}
+        a_{1p} \\ a_{2p} \\ \vdots \\ a_{mp}
+    \end{bmatrix}
+    \]
+    
+    
+\end{defin}
+
+\begin{defin}{Matrix Matrix Multiplication via Linear Combinations of Rows}
+
+    Let X $\in \R^{m \times p}$ and A $\in \R^{p \times n}$
+\end{defin}
+
+\begin{defin}{}
+\textbf{Matrix Matrix Multiplication via Dot Products}
+    
+    Let A $\in \R^{m \times p}$ and X $\in \R^{p \times n}$. Then the entries of B $\in \R^{m \times n}$ are the dot products of the rows of A with the columns of X.
+    \[ b_{ij} = \text{A(i, :)} \cdot \text{X(:, j)}\]
+    \[ b_{ij} = \sum_{k=1}^{p} a_{ik} \cdot x_{kj}\]
+    \[
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1p} \\
+        a_{21} & a_{22} & \cdots & a_{2p} \\
+        \vdots & \vdots & \ddots & \vdots    \\
+        a_{m1} & a_{m2} & \cdots & a_{mp} \\
+    \end{bmatrix}_{m \times p}
+    \begin{bmatrix}
+        x_{11} & x_{12} & \cdots & x_{1n} \\
+        x_{21} & x_{22} & \cdots & x_{2n} \\
+        \vdots & \vdots & \ddots & \vdots    \\
+        x_{p1} & x_{p2} & \cdots & x_{pn} \\
+    \end{bmatrix}_{p \times n}
+    =
+    \begin{bmatrix}
+        b_{11} & b_{12} & \cdots & b_{1n} \\
+        b_{21} & b_{22} & \cdots & b_{2n} \\
+        \vdots & \vdots & \ddots & \vdots    \\
+        b_{m1} & b_{m2} & \cdots & b_{mn} \\
+    \end{bmatrix}_{m \times n}
+    \]
+
+    \[
+    b_{ij}
+    =
+    \begin{bmatrix}
+        a_{i1} & a_{i2} & \cdots & a_{ip} \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        x_{1j} \\ x_{2j} \\ \vdots \\ x_{pj} \\
+    \end{bmatrix}
+    \]
+    \[
+    = a_{i1} \cdot x_{1j} + a_{i2} \cdot x_{2j} + \cdots + a_{ip} \cdot x_{pj}
+    \]
+    
+\end{defin}
+
+\begin{defin}{Matrix Matrix Multiplication via Outer Products}
+
+    Let A $\in \R^{m \times p}$ and X $\in \R^{p \times n}$
+\end{defin}
+
+
+
+
+\section{Nonsingular Linear Systems Problem}
+\subsection{Elimination}
+
+\end{document}
+
