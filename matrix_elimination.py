@@ -11,7 +11,7 @@ from numpy.linalg import multi_dot
 
 import random
 
-class Me:
+class ME:
 
 	# Matrix elimination class
 	
@@ -37,19 +37,19 @@ class Me:
 		if self.n != b.shape[0]:
 			return False
 
-		# constructor intializes Me by copying input matrix A and vector b
+		# constructor intializes ME by copying input matrix A and vector b
 		self.A = A
 		self.b = b
 
 		# produces the Upper triangular matrix from A
 		# and the Elimination matrix to get there
-		(self.U, self.E) = Me.elimination(self.A)
+		(self.U, self.E) = ME.elimination(self.A)
 		
 		# produces y by multiplying Elimination matrix by vector b.
 		self.y = np.dot(self.E,self.b)
 		
 		# finds x vector using backwards substitution 
-		self.x = Me.backward_sub(self.U, self.y)
+		self.x = ME.backward_sub(self.U, self.y)
 
 
 	# shear matrix S_ij(c)
@@ -82,7 +82,7 @@ class Me:
 			for i in range(j+1,n):
 				# print(i,j)
 				c = -1 * A[i,j] / p
-				s = Me.sm(n,i,j,c)
+				s = ME.sm(n,i,j,c)
 				# append shear matrices to a single shear matrix
 				S = np.dot(S,s) 
 	
@@ -135,7 +135,7 @@ class Me:
 	
 	# truncate any matrix for specified range
 	# usage:
-	# 	s.U = Me.truncate(s.U)
+	# 	s.U = ME.truncate(s.U)
 	def truncate(A : np.array):
 		for i in range(0,A.shape[0]):
 			for j in range(0,A.shape[1]):
@@ -180,13 +180,13 @@ A1 = np.array([[1,0,0,0],[2,1,0,0],[3,5,1,1],[1,3,5,1]])
 b1 = np.array([5,10,3,1])
 
 # system
-s1 = Me(A1,b1)
+s1 = ME(A1,b1)
 
 s1.p()
 s1.p_e()
 
-A2 = Me.rand_array(4,10)
+A2 = ME.rand_array(4,10)
 
-s2 = Me(A2,b1)
-s2.U = Me.truncate(s2.U)
+s2 = ME(A2,b1)
+s2.U = ME.truncate(s2.U)
 s2.p()
